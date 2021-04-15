@@ -1,72 +1,66 @@
-describe('app', function() {
+describe('App', function() {
     it('should exist', function() {
-        expect(app).toBeDefined();
+        expect(App).toBeDefined();
+    });
+
+    describe('handleKeyStroke', function() {
+        it('should exist', function() {
+            const app = new App();
+            expect(app.handleKeyStroke).toBeDefined();
+        });
+    
+        it('should increase keysStroked until minKeyStrokes and then reset it to 0', function() {
+            const app = new App();
+
+            for(let i = 0; i < app.minKeyStrokes; i++) {
+                expect(app.keysStroked).toEqual(i);
+                app.handleKeyStroke();
+            }
+            expect(app.keysStroked).toEqual(0);
+        })
+    
+        it('should increase money by baseAmount', function() {
+            const app = new App();
+
+            spyOn(Math, 'random').and.returnValue(1);
+    
+            for(let i = 0; i < app.minKeyStrokes; i++) {
+                app.handleKeyStroke();
+            }
+    
+            expect(app.money).toEqual(app.baseAmount);
+        });
+    
+        it('should not increase money and should call onBug', function() {   
+            const app = new App();
+
+            spyOn(Math, 'random').and.returnValue(0.1);
+            spyOn(app, 'onBug');
+    
+            for(let i = 0; i < app.minKeyStrokes; i++) {
+                app.handleKeyStroke();
+            }
+    
+            expect(app.money).toEqual(0);
+            expect(app.onBug).toHaveBeenCalled();
+        });
+    });
+
+    describe('increaseMoney', function() {
+        it('should exist', function() {
+            const app = new App();
+            expect(app.increaseMoney).toBeDefined();
+        });
+    
+        it('should increase money', function() {
+            const app = new App();
+            let moneyElement = document.createElement('div');
+            spyOn(document, 'getElementById').and.returnValue(moneyElement);
+    
+            app.increaseMoney(10);
+            
+            expect(app.money).toEqual(10);
+            expect(moneyElement.innerHTML).toEqual('10');
+        });
     });
 });
-
-// describe('getMoney', function() {
-//     it('should exist', function() {
-//         expect(getMoney).toBeDefined();
-//     });
-
-//     it('should return a number', function() {
-//         expect(typeof getMoney()).toEqual('number');
-//     });
-// });
-
-// describe('handleKeyStroke', function() {
-//     it('should exist', function() {
-//         expect(handleKeyStroke).toBeDefined();
-//     });
-
-//     it('should increase keysStroked until minKeyStrokes and then reset it to 0', function() {
-//         keysStroked = 0;
-//         for(let i = 0; i < minKeyStrokes; i++) {
-//             expect(keysStroked).toEqual(i);
-//             handleKeyStroke();
-//         }
-//         expect(keysStroked).toEqual(0);
-//     })
-
-//     it('should increase money by baseAmount', function() {
-//         money = 0;
-//         spyOn(Math, 'random').and.returnValue(1);
-
-//         for(let i = 0; i < minKeyStrokes; i++) {
-//             handleKeyStroke();
-//         }
-
-//         expect(money).toEqual(baseAmount);
-//     });
-
-//     it('should not increase money and should call onBug', function() {
-//         money = 0;
-
-//         spyOn(Math, 'random').and.returnValue(0.1);
-//         spyOn(window, 'onBug');
-
-//         for(let i = 0; i < minKeyStrokes; i++) {
-//             handleKeyStroke();
-//         }
-
-//         expect(money).toEqual(0);
-//         expect(onBug).toHaveBeenCalled();
-//     });
-// });
-
-// describe('increaseMoney', function() {
-//     it('should exist', function() {
-//         expect(increaseMoney).toBeDefined();
-//     });
-
-//     it('should increase money', function() {
-//         money = 0;
-//         let moneyElement = document.createElement('div');
-//         spyOn(document, 'getElementById').and.returnValue(moneyElement);
-
-//         increaseMoney(10);
-        
-//         expect(money).toEqual(10);
-//         expect(moneyElement.innerHTML).toEqual('10');
-//     });
-// });

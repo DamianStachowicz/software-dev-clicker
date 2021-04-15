@@ -1,39 +1,36 @@
-let money = 0;
-let interval = 1000; // ms
-let keysStroked = 0;
-let minKeyStrokes = 5;
-let baseAmount = 100;
-let bugProbability = 0.1;
+class App {
+    money = 0;
+    interval = 1000; // ms
+    keysStroked = 0;
+    minKeyStrokes = 5;
+    baseAmount = 100;
+    bugProbability = 0.1;
 
-class App () {
-}
+    handleKeyStroke() {
+        this.keysStroked++;
+        if (this.keysStroked >= this.minKeyStrokes) {
+            this.keysStroked = 0;
+    
+            if (Math.random() > this.bugProbability) {
+                this.increaseMoney(this.baseAmount);
+            } else {
+                this.onBug();
+            }
+        }
+    }
 
-function getMoney() {
-    return money;
-}
+    onBug() {
+        console.log("BUG!");
+    }
 
-function handleKeyStroke() {
-    keysStroked++;
-    if (keysStroked >= minKeyStrokes) {
-        keysStroked = 0;
-
-        if (Math.random() > bugProbability) {
-            increaseMoney(baseAmount);
-        } else {
-            onBug();
+    increaseMoney(amount) {
+        this.money += amount;
+    
+        let elem = document.getElementById('money');
+        if(elem) {
+            elem.innerHTML = this.money;
         }
     }
 }
 
-function onBug() {
-    console.log("BUG!");
-}
-
-function increaseMoney(amount) {
-    money += amount;
-
-    let elem = document.getElementById('money');
-    if(typeof elem !== 'undefined' && elem !== null) {
-        elem.innerHTML = money;
-    }
-}
+const app = new App();
