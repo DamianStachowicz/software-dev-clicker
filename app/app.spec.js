@@ -63,4 +63,56 @@ describe('App', function() {
             expect(moneyElement.innerHTML).toEqual('10');
         });
     });
+
+    describe('loop', function() {
+        let app;
+        let moneyElement
+
+        beforeEach(function () {
+            app = new App();
+            Programmer.programmers = [];
+
+            jasmine.clock().install();
+
+            moneyElement = document.createElement('div');
+            moneyElement.innerHTML = '0';
+            spyOn(document, 'getElementById').and.callFake(function(id) {
+                return id === 'money' ? moneyElement : null;
+            });
+        });
+
+        afterEach(function() {
+            jasmine.clock().uninstall();
+        });
+
+        it('should exist', function() {
+            expect(app.loop).toBeDefined();
+        });
+
+        it('should not increase money when there are no programmers', function() {
+            app.loop();
+            jasmine.clock().tick(app.interval);
+
+            expect(app.money).toEqual(0);
+            expect(moneyElement.innerHTML).toContain('0');
+        });
+
+        it('should increase money by base amount times each programmer\'s speed', function() {
+            Programmer.buyProgrammer();
+            Programmer.buyProgrammer();
+            Programmer.buyProgrammer();
+
+            app.loop();
+            jasmine.clock().tick(app.interval);
+
+            let money = app.baseAmount * (
+                Programmer.programmers[0].speed +
+                Programmer.programmers[1].speed +
+                Programmer.programmers[2].speed
+            );
+
+            expect(app.money).toEqual(money);
+            expect(moneyElement.innerHTML).toContain(`${money}`);
+        });
+    });
 });

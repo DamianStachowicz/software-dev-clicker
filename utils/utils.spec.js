@@ -21,4 +21,15 @@ describe('Utils', function() {
             expect(Utils.getRandomArrayElement(array)).toEqual('b');
         });
     });
+
+    describe('getRandomNumber()', function() {
+        it('should exist', function() {
+            expect(Utils.getRandomNumber).toBeDefined();
+        });
+
+        it('should return a number between min and max', function() {
+            expect(Utils.getRandomNumber(3, 15)).toBeGreaterThanOrEqual(3);
+            expect(Utils.getRandomNumber(3, 15)).toBeLessThanOrEqual(15);
+        });
+    });
 });

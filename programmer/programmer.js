@@ -1,21 +1,25 @@
-programmers = [];
-
 class Programmer {
     static firstNames = ['Robert', 'John', 'Pajeet', 'Janusz', 'Kumar', 'Ivan', 'Michał'];
     static lastNames = ['Javowsky', 'Snow', 'Andrysiak', 'Anand', 'Nosek', 'Korrapati', 'Mishra'];
+    static minSpeed = 1;
+    static maxSpeed = 10;
+    static programmers = [];
     
     firstName;
     lastName;
+    speed;
 
-    constructor(firstName, lastName) {
+    constructor(firstName, lastName, speed) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.speed = speed;
     };
 
     static buyProgrammer() {
-        programmers.push(new Programmer(
+        this.programmers.push(new Programmer(
             Utils.getRandomArrayElement(this.firstNames),
-            Utils.getRandomArrayElement(this.lastNames)
+            Utils.getRandomArrayElement(this.lastNames),
+            Utils.getRandomNumber(this.minSpeed, this.maxSpeed)
         ));
     
         this.renderProgrammers();
@@ -29,7 +33,7 @@ class Programmer {
         }
     
         programmersElement.innerHTML = '';
-        programmers.forEach(function(programmer) {
+        this.programmers.forEach(function(programmer) {
             const div = document.createElement('div');
             div.innerHTML = programmer.firstName + ' ' + programmer.lastName;
             programmersElement.appendChild(div);

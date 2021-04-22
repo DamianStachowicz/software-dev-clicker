@@ -9,10 +9,11 @@ describe('Programmer', function() {
         }); 
 
         it('should construct a valid Programmer', function() {
-            const programmer = new Programmer('Name', 'Surname');
+            const programmer = new Programmer('Name', 'Surname', 2);
 
             expect(programmer.firstName).toEqual('Name');
             expect(programmer.lastName).toEqual('Surname');
+            expect(programmer.speed).toEqual(2);
         });
     });
 
@@ -23,21 +24,23 @@ describe('Programmer', function() {
         });
 
         it('should only add one programmer at a time', function() {
-            programmers = [];
+            Programmer.programmers = [];
             
             for(let i = 1; i < 6; i++) {
                 Programmer.buyProgrammer();
-                expect(programmers.length).toEqual(i);
+                expect(Programmer.programmers.length).toEqual(i);
             }
         });
         
         it('should add Robert Javowsky', function() {
-            programmers = [];
-            spyOn(Math, 'random').and.returnValues(0, 0);
+            Programmer.programmers = [];
+            spyOn(Math, 'random').and.returnValues(0, 0, 0.3, 0.4);
             
             Programmer.buyProgrammer();
-            expect(programmers[0].firstName).toEqual('Robert');
-            expect(programmers[0].lastName).toEqual('Javowsky');
+            expect(Programmer.programmers[0].firstName).toEqual('Robert');
+            expect(Programmer.programmers[0].lastName).toEqual('Javowsky');
+            expect(Programmer.programmers[0].speed).toBeGreaterThanOrEqual(Programmer.minSpeed);
+            expect(Programmer.programmers[0].speed).toBeLessThanOrEqual(Programmer.maxSpeed);
         });
 
         it('should render programmers', function() {
@@ -59,7 +62,7 @@ describe('Programmer', function() {
                 return id === 'programmers' ? programmersElement : null;
             });
     
-            programmers = [new Programmer('Robert', 'Javowsky')];
+            Programmer.programmers = [new Programmer('Robert', 'Javowsky')];
             Programmer.renderProgrammers();
     
             expect(programmersElement.innerHTML).toContain('Robert');
